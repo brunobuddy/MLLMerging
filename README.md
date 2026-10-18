@@ -1,17 +1,48 @@
 <div align="center">
 
-# Closed-Form Spectral Regularization for Multi-Task Model Merging
+# MLLMerging
 
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./fusion_bench/LICENSE)
-[![ICLR](https://img.shields.io/badge/ICLR-2026-darkgreen.svg)](#iclr-2026-optmerge-unifying-multimodal-llm-capabilities-and-modalities-via-model-merging)
+**Official code for OptMerge (ICLR 2026) and the SWUDI / ASWUDI closed-form spectral merging family**
+
+[![arXiv](https://img.shields.io/badge/arXiv-2505.19892-b31b1b.svg?logo=arxiv)](https://arxiv.org/abs/2505.19892)
+[![ICLR 2026](https://img.shields.io/badge/ICLR-2026-darkgreen.svg)](https://openreview.net/forum?id=Me0n0iESJY)
+[![Checkpoints](https://img.shields.io/badge/Checkpoints-Hugging_Face-yellow.svg?logo=huggingface)](https://huggingface.co/collections/yongxianwei/mllmerging-6833cd681869c47bd0b5200a)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
+
+<img src="assets/optmerge_overview.png" width="720" alt="Merging capability experts (VQA, Geometry, Chart, OCR, Grounding) or modality-specific MLLMs (vision, audio, video) into one model without training data">
 
 </div>
 
-> Originally published as **OptMerge** at ICLR 2026. The current release adds
-> the **SWUDI / ASWUDI** spectral-filtering family and unifies
-> multimodal LLM, CLIP-ViT, Flan-T5 and Llama-3.2 merging benchmarks.
+## News
 
-## Guidances
+- **2026-05**: Added **SWUDI / ASWUDI** with reproduction pipelines for multimodal LLM, CLIP-ViT, Flan-T5 and Llama-3.2 merging ([details](#swudi--aswudi)).
+- **2026-03**: The ICLR 2026 camera-ready of **OptMerge** is on [arXiv](https://arxiv.org/abs/2505.19892) and [OpenReview](https://openreview.net/forum?id=Me0n0iESJY).
+- **2025-05**: Released the MLLM merging benchmark, code and [expert checkpoints](https://huggingface.co/collections/yongxianwei/mllmerging-6833cd681869c47bd0b5200a).
+
+## OptMerge at a glance
+
+Task-specific fine-tunes of MLLMs appear on Hugging Face much faster than new foundation models. OptMerge studies how to combine such experts into a single model **without any training data**.
+
+- **Benchmark.** Five capability experts (VQA, Geometry, Chart, OCR, Grounding), each fine-tuned on at least 100K public samples, for both **LoRA** (Qwen2-VL-7B-Base) and **full fine-tuning** (InternVL2.5-1B-Instruct), evaluated on 10 benchmarks. A second track merges vision-, audio- and video-language models that share Vicuna-7B. All experts are [released](https://huggingface.co/collections/yongxianwei/mllmerging-6833cd681869c47bd0b5200a), and 10 merging algorithms are implemented on the benchmark.
+- **Method.** OptMerge removes noise from task vectors with a low-rank approximation and stabilizes the data-free optimization of the merged vector. For LoRA experts it switches to SGD and starts from the mean task vector, so the merged vector does not inflate its norm, which would otherwise collapse language ability.
+- **Findings.** The merged model comes close to or exceeds mixture-data training and the official instruct model, and merging modalities beats every single-modality model.
+
+## Main results
+
+Average over the 10 capability benchmarks (VizWiz, GQA, MathVista, MATH-Vision, ChartQA, TextVQA, OCRVQA, RefCOCO, RefCOCO+, RefCOCOg), from the paper ([arXiv v3](https://arxiv.org/abs/2505.19892v3)):
+
+| Experts merged | Best other merging method | **OptMerge** | Reference |
+|---|:---:|:---:|---|
+| Qwen2-VL-7B, 5 LoRA experts | 61.88 (TIES + DARE) | **63.30** | 62.23 (Qwen2-VL-7B-Instruct) |
+| InternVL2.5-1B, 5 full fine-tuning experts | 57.00 (WUDI) | **57.44** | 57.66 (mixture-data training) |
+| Qwen2-VL-7B, 4 community checkpoints from Hugging Face | 66.58 (TIES + DARE) | **66.70** | 63.17 (best single checkpoint) |
+| Qwen2.5-VL-32B-Instruct, 5 experts | not reported | **72.52** | 71.87 (best single expert) |
+
+Merging the five InternVL2.5-1B experts takes 0.22 h and 2.62 GB of GPU memory, compared with 25.38 h and 240 GB for mixture-data training. In modality merging, the merged vision + audio + video model scores 67.00 on MUSIC-AVQA / AVQA, above the best single-modality model (64.11).
+
+## SWUDI / ASWUDI
+
+The current release extends OptMerge with **SWUDI**, a unified closed-form spectral solver for multi-task merging, and **ASWUDI**, its zero-hyperparameter adaptive variant. Method configs and full reproduction commands are in [`fusion_bench/README.md`](./fusion_bench/README.md).
 
 | Line | Models | Code | Reproduction |
 |---|---|---|---|
@@ -22,7 +53,7 @@ The two lines share the same SWUDI / ASWUDI math; the MLLM line keeps a
 math-identical standalone copy at `LLaMA-Factory/swudi_aswudi.py` so MLLM
 merging can run without installing the full `fusion_bench` package.
 
-## Quick start
+### Quick start
 
 ```bash
 git clone https://github.com/WalkerWorldPeace/MLLMerging.git
@@ -44,17 +75,13 @@ python LLaMA-Factory/sanity_red_minimal.py
 > **Use separate conda environments for lines A and B**. See [`fusion_bench/README.md`](./fusion_bench/README.md) §1
 > for the full four-environment matrix.
 
-<div align='center'>
+## Reproducing OptMerge (ICLR 2026)
 
-# [ICLR 2026] OptMerge: Unifying Multimodal LLM Capabilities and Modalities via Model Merging
-
-</div>
-
-## Checkpoints
+### Checkpoints
 
 You can find MLLM checkpoints at [🤗 Hugging Face collection](https://huggingface.co/collections/yongxianwei/mllmerging-6833cd681869c47bd0b5200a). The weights can also be automatically downloaded when running the model merging scripts below.
 
-## QwenVL Merging
+### QwenVL Merging
 
 1. **Install the development version and dependencies:**
     ```bash
@@ -91,7 +118,7 @@ You can find MLLM checkpoints at [🤗 Hugging Face collection](https://huggingf
 
 ---
 
-## InternVL Merging
+### InternVL Merging
 
 1. **Install dependencies:**
     ```bash
@@ -126,7 +153,7 @@ You can find MLLM checkpoints at [🤗 Hugging Face collection](https://huggingf
 
 ---
 
-## Evaluating the Merged Model
+### Evaluating the Merged Model
 
 1. **Install VLMEvalKit and configure evaluation:**
     ```bash
@@ -152,7 +179,7 @@ You can find MLLM checkpoints at [🤗 Hugging Face collection](https://huggingf
 
 ---
 
-## Modality Merging
+### Modality Merging
 
 1. **Install dependencies:**
     ```bash
@@ -191,10 +218,15 @@ You can find MLLM checkpoints at [🤗 Hugging Face collection](https://huggingf
 
 ---
 
+## License
+
+The code in this repository is released under the [Apache License 2.0](./LICENSE). Bundled third-party projects keep their own licenses: `LLaMA-Factory/`, `VLMEvalKit/`, `ModelCompose/` and `fusion_bench/` are Apache-2.0, while `InternVL/` and `lmms-eval/` are MIT. See the `LICENSE` file in each directory.
+
 ## Acknowledgement
 
 This project thanks the following open source communities for their contributions:
 
+- [FusionBench](https://github.com/tanganke/fusion_bench)
 - [LLaMA-Factory](https://github.com/hiyouga/LLaMA-Factory)
 - [InternVL](https://github.com/OpenGVLab/InternVL)
 - [ModelCompose](https://github.com/THUNLP-MT/ModelCompose)
@@ -209,7 +241,8 @@ If you find OptMerge useful for your research and applications, please cite usin
 @inproceedings{wei2025optmerge,
   title={OptMerge: Unifying Multimodal LLM Capabilities and Modalities via Model Merging},
   author={Wei, Yongxian and Cheng, Runxi and Jin, Weike and Yang, Enneng and Shen, Li and Hou, Lu and Du, Sinan and Yuan, Chun and Cao, Xiaochun and Tao, Dacheng},
-  booktitle={ICLR},
-  year={2026}
+  booktitle={The Fourteenth International Conference on Learning Representations},
+  year={2026},
+  url={https://openreview.net/forum?id=Me0n0iESJY}
 }
 ```

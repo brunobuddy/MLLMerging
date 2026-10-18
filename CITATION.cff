@@ -1,0 +1,65 @@
+cff-version: 1.2.0
+message: "If you use this code or the released checkpoints, please cite the OptMerge paper as below."
+title: "MLLMerging"
+type: software
+authors:
+  - family-names: Wei
+    given-names: Yongxian
+  - family-names: Cheng
+    given-names: Runxi
+  - family-names: Jin
+    given-names: Weike
+  - family-names: Yang
+    given-names: Enneng
+  - family-names: Shen
+    given-names: Li
+  - family-names: Hou
+    given-names: Lu
+  - family-names: Du
+    given-names: Sinan
+  - family-names: Yuan
+    given-names: Chun
+  - family-names: Cao
+    given-names: Xiaochun
+  - family-names: Tao
+    given-names: Dacheng
+repository-code: "https://github.com/WalkerWorldPeace/MLLMerging"
+url: "https://openreview.net/forum?id=Me0n0iESJY"
+license: Apache-2.0
+keywords:
+  - model merging
+  - multimodal large language models
+  - task vectors
+preferred-citation:
+  type: conference-paper
+  title: "OptMerge: Unifying Multimodal LLM Capabilities and Modalities via Model Merging"
+  authors:
+    - family-names: Wei
+      given-names: Yongxian
+    - family-names: Cheng
+      given-names: Runxi
+    - family-names: Jin
+      given-names: Weike
+    - family-names: Yang
+      given-names: Enneng
+    - family-names: Shen
+      given-names: Li
+    - family-names: Hou
+      given-names: Lu
+    - family-names: Du
+      given-names: Sinan
+    - family-names: Yuan
+      given-names: Chun
+    - family-names: Cao
+      given-names: Xiaochun
+    - family-names: Tao
+      given-names: Dacheng
+  collection-title: "The Fourteenth International Conference on Learning Representations"
+  conference:
+    name: "ICLR 2026"
+  year: 2026
+  url: "https://openreview.net/forum?id=Me0n0iESJY"
+  identifiers:
+    - type: doi
+      value: "10.48550/arXiv.2505.19892"
+      description: "arXiv preprint"
