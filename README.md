@@ -2,10 +2,11 @@
 
 # MLLMerging
 
-**Official code for OptMerge (ICLR 2026) and the SWUDI / ASWUDI closed-form spectral merging family**
+**Official code for OptMerge (ICLR 2026) and its extended version SWUDI**
 
-[![arXiv](https://img.shields.io/badge/arXiv-2505.19892-b31b1b.svg?logo=arxiv)](https://arxiv.org/abs/2505.19892)
+[![OptMerge](https://img.shields.io/badge/OptMerge-arXiv_2505.19892-b31b1b.svg?logo=arxiv)](https://arxiv.org/abs/2505.19892)
 [![ICLR 2026](https://img.shields.io/badge/ICLR-2026-darkgreen.svg)](https://openreview.net/forum?id=Me0n0iESJY)
+[![SWUDI](https://img.shields.io/badge/SWUDI-arXiv_2606.07289-b31b1b.svg?logo=arxiv)](https://arxiv.org/abs/2606.07289)
 [![Checkpoints](https://img.shields.io/badge/Checkpoints-Hugging_Face-yellow.svg?logo=huggingface)](https://huggingface.co/collections/yongxianwei/mllmerging-6833cd681869c47bd0b5200a)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 
@@ -15,6 +16,7 @@
 
 ## News
 
+- **2026-06**: The extended version, [*Closed-Form Spectral Regularization for Multi-Task Model Merging*](https://arxiv.org/abs/2606.07289) (SWUDI), is on arXiv.
 - **2026-05**: Added **SWUDI / ASWUDI** with reproduction pipelines for multimodal LLM, CLIP-ViT, Flan-T5 and Llama-3.2 merging ([details](#swudi--aswudi)).
 - **2026-03**: The ICLR 2026 camera-ready of **OptMerge** is on [arXiv](https://arxiv.org/abs/2505.19892) and [OpenReview](https://openreview.net/forum?id=Me0n0iESJY).
 - **2025-05**: Released the MLLM merging benchmark, code and [expert checkpoints](https://huggingface.co/collections/yongxianwei/mllmerging-6833cd681869c47bd0b5200a).
@@ -42,7 +44,7 @@ Merging the five InternVL2.5-1B experts takes 0.22 h and 2.62 GB of GPU memory, 
 
 ## SWUDI / ASWUDI
 
-The current release extends OptMerge with **SWUDI**, a unified closed-form spectral solver for multi-task merging, and **ASWUDI**, its zero-hyperparameter adaptive variant. Method configs and full reproduction commands are in [`fusion_bench/README.md`](./fusion_bench/README.md).
+The extended version of OptMerge, [Closed-Form Spectral Regularization for Multi-Task Model Merging](https://arxiv.org/abs/2606.07289), shows that the iterative solver used by state-of-the-art merging methods acts as an implicit spectral regularizer, and replaces it with a closed-form spectral filter. **SWUDI** combines a soft exponential filter with a hard top-K truncation; **ASWUDI** (called SWUDI-A in the paper) replaces the global rank with per-layer rank rules. Both need one symmetric eigendecomposition per linear layer and no training data, and match or outperform state-of-the-art merging methods with 28–72× less wall-clock time and up to 50% less peak GPU memory. Method configs and full reproduction commands are in [`fusion_bench/README.md`](./fusion_bench/README.md).
 
 | Line | Models | Code | Reproduction |
 |---|---|---|---|
@@ -236,7 +238,7 @@ This project thanks the following open source communities for their contribution
 Thanks to them for their contributions to the development of model training and evaluation tools!
 
 ## Citation
-If you find OptMerge useful for your research and applications, please cite using this BibTeX:
+If you find this repository useful for your research and applications, please cite both OptMerge and its extended version:
 ```bibtex
 @inproceedings{wei2025optmerge,
   title={OptMerge: Unifying Multimodal LLM Capabilities and Modalities via Model Merging},
@@ -244,5 +246,12 @@ If you find OptMerge useful for your research and applications, please cite usin
   booktitle={The Fourteenth International Conference on Learning Representations},
   year={2026},
   url={https://openreview.net/forum?id=Me0n0iESJY}
+}
+
+@article{wei2026swudi,
+  title={Closed-Form Spectral Regularization for Multi-Task Model Merging},
+  author={Wei, Yongxian and Cheng, Runxi and Zhang, Xingxuan and Shen, Li and Yuan, Chun and Cui, Peng and Tao, Dacheng},
+  journal={arXiv preprint arXiv:2606.07289},
+  year={2026}
 }
 ```

@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this code or the released checkpoints, please cite the OptMerge paper as below."
+message: "If you use this code or the released checkpoints, please cite both OptMerge (ICLR 2026, the preferred citation below) and its extended version SWUDI (arXiv:2606.07289, listed under references)."
 title: "MLLMerging"
 type: software
 authors:
@@ -11,6 +11,8 @@ authors:
     given-names: Weike
   - family-names: Yang
     given-names: Enneng
+  - family-names: Zhang
+    given-names: Xingxuan
   - family-names: Shen
     given-names: Li
   - family-names: Hou
@@ -21,6 +23,8 @@ authors:
     given-names: Chun
   - family-names: Cao
     given-names: Xiaochun
+  - family-names: Cui
+    given-names: Peng
   - family-names: Tao
     given-names: Dacheng
 repository-code: "https://github.com/WalkerWorldPeace/MLLMerging"
@@ -30,6 +34,7 @@ keywords:
   - model merging
   - multimodal large language models
   - task vectors
+  - spectral regularization
 preferred-citation:
   type: conference-paper
   title: "OptMerge: Unifying Multimodal LLM Capabilities and Modalities via Model Merging"
@@ -63,3 +68,28 @@ preferred-citation:
     - type: doi
       value: "10.48550/arXiv.2505.19892"
       description: "arXiv preprint"
+references:
+  - type: article
+    title: "Closed-Form Spectral Regularization for Multi-Task Model Merging"
+    authors:
+      - family-names: Wei
+        given-names: Yongxian
+      - family-names: Cheng
+        given-names: Runxi
+      - family-names: Zhang
+        given-names: Xingxuan
+      - family-names: Shen
+        given-names: Li
+      - family-names: Yuan
+        given-names: Chun
+      - family-names: Cui
+        given-names: Peng
+      - family-names: Tao
+        given-names: Dacheng
+    journal: "arXiv preprint arXiv:2606.07289"
+    year: 2026
+    url: "https://arxiv.org/abs/2606.07289"
+    identifiers:
+      - type: doi
+        value: "10.48550/arXiv.2606.07289"
+        description: "arXiv preprint"
